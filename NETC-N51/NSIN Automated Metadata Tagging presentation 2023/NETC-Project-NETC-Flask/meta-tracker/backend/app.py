@@ -1,5 +1,3 @@
-#app.py
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -78,7 +76,7 @@ def summarize_pdf(text):
     # Prompt for summarization
     prompt = "Summarize the following text:\n" + text
 
-    # Parameters for the summarization request
+    # Parameters for the summarization request from OpenAI
     parameters = {
         'engine': 'text-davinci-003',
         'prompt': prompt,
@@ -99,3 +97,8 @@ def summarize_pdf(text):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+#-----------------------------------------------------------------------------------------------
+'''Implement upload,display, search and summarizzation functions for Docs, txt, image, video'''
+'''functions for dashboard and grammar check'''

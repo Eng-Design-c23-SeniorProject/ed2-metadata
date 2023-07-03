@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="title">
-        <Link to="/">Meta Tracker</Link>
+        <Link to="/">MetaTracker</Link>
       </div>
       <form className="search-form">
         <input type="text" placeholder="Search..." />
