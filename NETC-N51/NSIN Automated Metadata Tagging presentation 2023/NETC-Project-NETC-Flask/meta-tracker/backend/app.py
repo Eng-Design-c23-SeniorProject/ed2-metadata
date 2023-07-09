@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from pymongo import MongoClient
 import base64
@@ -10,41 +10,40 @@ from bson import ObjectId
 app = Flask(__name__)
 CORS(app)
 
-# MongoDB connection
-client = MongoClient('#')
+#MongoDB connection
+client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority')
 db = client['pdf_database']
 collection = db['pdf_collection']
 
-# OpenAI API key
-openai.api_key = '#'
+#OpenAI API key
+openai.api_key = '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'
 
-# File upload route
+#files upload route
 @app.route('/upload', methods=['POST'])
 def upload():
     file = request.files['file']
     file_data = file.read()
 
-    # Store the uploaded PDF file in MongoDB
-    pdf_data = base64.b64encode(file_data).decode('utf-8')
-    name = file.filename
-    document = {'name': name, 'data': pdf_data}
+    #store the uploaded PDF file in MongoDB
+    binary_data = base64.b64encode(file_data)
+    document = {'name': file.filename, 'data': binary_data}
     collection.insert_one(document)
 
     return 'File uploaded successfully.'
 
-# Search route
+#search route
 @app.route('/search', methods=['POST'])
 def search():
     query = request.json['query']
     result = []
 
-    # Search for PDF files in the MongoDB collection
+    #search for PDF files in the MongoDB collection
     for document in collection.find({'name': {'$regex': query, '$options': 'i'}}):
         result.append({'_id': str(document['_id']), 'name': document['name']})
 
     return jsonify(result=result, query=query)
 
-# Display route
+#display route
 @app.route('/display/<file_id>')
 def display(file_id):
     document = collection.find_one({'_id': ObjectId(file_id)})
@@ -52,14 +51,28 @@ def display(file_id):
         return 'File not found.'
 
     pdf_data = base64.b64decode(document['data'])
+
+    #generate summary of the PDF file using OpenAI
+    summary = summarize_pdf(pdf_data)
+
+    response = {
+        'pdfData': base64.b64encode(pdf_data).decode('utf-8'),
+        'summary': summary
+    }
+
+    return jsonify(response)
+
+#summary generator setup
+def summarize_pdf(pdf_data):
+    #extract text from the PDF file
     text_content = extract_text_from_pdf(pdf_data)
 
-    # Generate summary of the PDF file using OpenAI
-    summary = summarize_pdf(text_content)
+    #generate summary of the PDF file using OpenAI
+    summary = summarize_text(text_content)
 
-    return jsonify(text_content=text_content, summary=summary)
+    return summary
 
-# Help functions for text extraction and summarization
+#functions for text extraction and summarization
 def extract_text_from_pdf(pdf_data):
     pdf_file = io.BytesIO(pdf_data)
     pdf_reader = PyPDF2.PdfReader(pdf_file)
@@ -72,11 +85,11 @@ def extract_text_from_pdf(pdf_data):
 
     return text_content
 
-def summarize_pdf(text):
-    # Prompt for summarization
-    prompt = "Summarize the following text:\n" + text
+def summarize_text(text):
+    #prompt for summarization
+    prompt = "Summarize the following text in one paragraph:\n" + text
 
-    # Parameters for the summarization request from OpenAI
+    #parameters for the summarization request from OpenAI
     parameters = {
         'engine': 'text-davinci-003',
         'prompt': prompt,
@@ -87,10 +100,10 @@ def summarize_pdf(text):
         'presence_penalty': 0.0
     }
 
-    # Send summarization request to OpenAI API
+    #send summarization request to OpenAI API
     response = openai.Completion.create(**parameters)
 
-    # Extract the summarized text from the API response
+    #sxtract the summarized text from the API response
     summary = response.choices[0].text.strip()
 
     return summary
@@ -100,5 +113,5 @@ if __name__ == '__main__':
 
 
 #-----------------------------------------------------------------------------------------------
-'''Implement upload,display, search and summarizzation functions for Docs, txt, image, video'''
-'''functions for dashboard and grammar check'''
+#implement upload,display, search and summarizzation functions for Docs, txt, image, video
+#functions for dashboard and grammar check

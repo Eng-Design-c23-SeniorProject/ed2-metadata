@@ -46,7 +46,7 @@
   margin-top: 80px; /* Adjust the margin as needed*/
   position: sticky;
   top: 0;
-  height: calc(130vh - 56px); /* Adjust the value as needed*/
+  height: calc(150vh - 56px); /* Adjust the value as needed*/
   overflow-y: auto;
 }
 .grid1 {
