@@ -11,12 +11,12 @@ app = Flask(__name__)
 CORS(app)
 
 #MongoDB connection
-client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient('#')
 db = client['pdf_database']
 collection = db['pdf_collection']
 
 #OpenAI API key
-openai.api_key = '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'
+openai.api_key = '#'
 
 #files upload route
 @app.route('/upload', methods=['POST'])

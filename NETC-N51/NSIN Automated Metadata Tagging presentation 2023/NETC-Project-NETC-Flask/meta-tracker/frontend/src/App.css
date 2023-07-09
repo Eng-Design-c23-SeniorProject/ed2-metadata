@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #bdd9ee;
+  background-color: #8c9fad;
   padding: 20px;
   position: fixed;
   top: 0;
@@ -50,7 +50,7 @@
   overflow-y: auto;
 }
 .grid1 {
-  background-color: #cbcbe0;
+  background-color: #84848f;
   padding: 10px;
 }
 .grid1 ul {
@@ -61,10 +61,10 @@
   margin-bottom: 5px;
 }
 .grid2 {
-  background-color: #ca6868;
+  background-color: #71a786;
 }
 .footer {
-  background-color: #f2f2f2;
+  background-color: #93b9f1;
   padding: 10px;
   position: fixed;
   bottom: 0;
