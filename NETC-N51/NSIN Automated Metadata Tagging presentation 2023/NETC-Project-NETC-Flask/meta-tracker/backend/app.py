@@ -108,10 +108,25 @@ def summarize_text(text):
 
     return summary
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
 
 
 #-----------------------------------------------------------------------------------------------
-#implement upload,display, search and summarizzation functions for Docs, txt, image, video
-#functions for dashboard and grammar check
+#add the routes of upload,display, search and summarizzation functions for Docs, txt, image, video
+'''alex
+    routes
+'''
+
+'''cesar
+    txt route
+
+    video route
+'''
+'''garrett
+    docs route
+    grammar route
+'''
+#add the routes for functions for dashboard and grammar check
+
+if __name__ == '__main__':
+    app.run(debug=True)
