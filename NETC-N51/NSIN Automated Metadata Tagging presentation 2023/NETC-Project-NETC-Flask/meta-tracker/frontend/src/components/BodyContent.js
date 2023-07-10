@@ -2,8 +2,8 @@ import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import '../App.css';
 import UploadPDF from './UploadPDF';
-import Search from './Search';
-import Display from './Display';
+import Search from './SearchPDF';
+import Display from './DisplayPDF';
 
 const BodyContent = () => {
   return (
