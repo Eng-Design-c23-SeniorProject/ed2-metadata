@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Search = () => {
+const SearchPDF = () => {
   const [query, setQuery] = useState('');
   const [result, setResult] = useState([]);
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const Search = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/search', { query });
+      const response = await axios.post('http://localhost:5000/search-pdf', { query });
       setResult(response.data.result);
     } catch (error) {
       console.error(error);
@@ -23,7 +23,7 @@ const Search = () => {
   };
 
   const handleFileClick = (id) => {
-    navigate(`/display/${id}`);
+    navigate(`/DisplayPDF/${id}`);
   };
 
   return (
@@ -48,7 +48,7 @@ const Search = () => {
           <ul>
             {result.map((document) => (
               <li key={document._id}>
-                <Link to={`/display/${document._id}`} onClick={() => handleFileClick(document._id)}>
+                <Link to={`/DisplayPDF/${document._id}`} onClick={() => handleFileClick(document._id)}>
                   {document.name}
                 </Link>
               </li>
@@ -62,4 +62,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchPDF;

@@ -1,59 +1,49 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-from pymongo import MongoClient
 import base64
-import PyPDF2
-import io
-import openai
 from bson import ObjectId
+from filefunction.pdfFunc import extract_text_from_pdf, summarize_text, collection as pdf_collection
+from filefunction.imgFunc import store_image, get_image, search_images, collection as image_collection
 
 app = Flask(__name__)
 CORS(app)
 
-#MongoDB connection
-client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority')
-db = client['pdf_database']
-collection = db['pdf_collection']
-
-#OpenAI API key
-openai.api_key = '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'
-
-#files upload route
-@app.route('/upload', methods=['POST'])
-def upload():
+# PDF upload route
+@app.route('/upload-pdf', methods=['POST'])
+def upload_pdf():
     file = request.files['file']
     file_data = file.read()
 
-    #store the uploaded PDF file in MongoDB
+    # Store the uploaded PDF file in MongoDB
     binary_data = base64.b64encode(file_data)
-    document = {'name': file.filename, 'data': binary_data}
-    collection.insert_one(document)
+    document = {'name': file.filename, 'data': binary_data}  # Database model
+    pdf_collection.insert_one(document)
 
-    return 'File uploaded successfully.'
+    return 'PDF file uploaded successfully.'
 
-#search route
-@app.route('/search', methods=['POST'])
-def search():
+# PDF search route
+@app.route('/search-pdf', methods=['POST'])
+def search_pdf():
     query = request.json['query']
     result = []
 
-    #search for PDF files in the MongoDB collection
-    for document in collection.find({'name': {'$regex': query, '$options': 'i'}}):
+    # Search for PDF files in the MongoDB collection
+    for document in pdf_collection.find({'name': {'$regex': query, '$options': 'i'}}):
         result.append({'_id': str(document['_id']), 'name': document['name']})
 
     return jsonify(result=result, query=query)
 
-#display route
-@app.route('/display/<file_id>')
-def display(file_id):
-    document = collection.find_one({'_id': ObjectId(file_id)})
+# PDF display route
+@app.route('/display-pdf/<file_id>')
+def display_pdf(file_id):
+    document = pdf_collection.find_one({'_id': ObjectId(file_id)})
     if document is None:
-        return 'File not found.'
+        return 'PDF file not found.'
 
     pdf_data = base64.b64decode(document['data'])
 
-    #generate summary of the PDF file using OpenAI
-    summary = summarize_pdf(pdf_data)
+    # Generate summary of the PDF file using OpenAI
+    summary = summarize_text(extract_text_from_pdf(pdf_data))
 
     response = {
         'pdfData': base64.b64encode(pdf_data).decode('utf-8'),
@@ -62,71 +52,37 @@ def display(file_id):
 
     return jsonify(response)
 
-#summary generator setup
-def summarize_pdf(pdf_data):
-    #extract text from the PDF file
-    text_content = extract_text_from_pdf(pdf_data)
+# Image upload route
+@app.route('/upload-image', methods=['POST'])
+def upload_image():
+    file = request.files['image']
+    file_data = file.read()
+    filename = file.filename
 
-    #generate summary of the PDF file using OpenAI
-    summary = summarize_text(text_content)
+    # Store the uploaded image file in MongoDB
+    store_image(file_data, filename)
 
-    return summary
+    return 'Image uploaded successfully.'
 
-#functions for text extraction and summarization
-def extract_text_from_pdf(pdf_data):
-    pdf_file = io.BytesIO(pdf_data)
-    pdf_reader = PyPDF2.PdfReader(pdf_file)
-    num_pages = len(pdf_reader.pages)
+# Image search route
+@app.route('/search-image', methods=['POST'])
+def search_image():
+    query = request.json['query']
 
-    text_content = ""
-    for page_num in range(num_pages):
-        page = pdf_reader.pages[page_num]
-        text_content += page.extract_text()
+    # Search for image files in the MongoDB collection
+    result = search_images(query)
 
-    return text_content
+    return jsonify(result=result, query=query)
 
-def summarize_text(text):
-    #prompt for summarization
-    prompt = "Summarize the following text in one paragraph:\n" + text
+# Image display route
+@app.route('/display-image/<file_id>')
+def display_image(file_id):
+    image_data = get_image(file_id)
+    if image_data is None:
+        return 'Image not found.'
 
-    #parameters for the summarization request from OpenAI
-    parameters = {
-        'engine': 'text-davinci-003',
-        'prompt': prompt,
-        'max_tokens': 100,
-        'temperature': 0.3,
-        'top_p': 1.0,
-        'frequency_penalty': 0.0,
-        'presence_penalty': 0.0
-    }
-
-    #send summarization request to OpenAI API
-    response = openai.Completion.create(**parameters)
-
-    #sxtract the summarized text from the API response
-    summary = response.choices[0].text.strip()
-
-    return summary
-
-
-
-
-#-----------------------------------------------------------------------------------------------
-#add the routes of upload,display, search and summarizzation functions for Docs, txt, image, video
-'''alex
-    routes
-'''
-
-'''cesar
-    txt route
-
-    video route
-'''
-'''garrett
-    docs route
-    grammar route
-'''
-#add the routes for functions for dashboard and grammar check
+    # Send the image data as a response
+    return send_file(base64.b64encode(image_data), mimetype='image/png')
 
 if __name__ == '__main__':
     app.run(debug=True)

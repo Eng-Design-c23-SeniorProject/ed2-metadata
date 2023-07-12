@@ -1,16 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 
-class UploadPDF extends React.Component {
+class UploadImg extends React.Component {
   handleFileUpload = async (event) => {
     event.preventDefault();
-    const fileInput = event.target.file.files[0];
+    const fileInput = event.target.image.files[0];
 
     const formData = new FormData();
-    formData.append('file', fileInput);
+    formData.append('image', fileInput);
 
     try {
-      const response = await axios.post('http://localhost:5000/upload-pdf', formData);
+      const response = await axios.post('http://localhost:5000/upload-image', formData);
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -20,9 +20,9 @@ class UploadPDF extends React.Component {
   render() {
     return (
       <div>
-        <h1>Upload a PDF</h1>
+        <h1>Upload an Image</h1>
         <form onSubmit={this.handleFileUpload}>
-          <input type="file" name="file" />
+          <input type="file" name="image" />
           <button type="submit">Upload</button>
         </form>
       </div>
@@ -30,4 +30,4 @@ class UploadPDF extends React.Component {
   }
 }
 
-export default UploadPDF;
+export default UploadImg;
