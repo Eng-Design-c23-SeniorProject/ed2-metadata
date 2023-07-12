@@ -11,7 +11,7 @@ db = client['pdf_database']
 collection = db['pdf_collection']
 
 #OpenAI API key
-openai.api_key = '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'
+openai.api_key = '#'
 
 #functions for text extraction and summarization
 def extract_text_from_pdf(pdf_data):

@@ -84,5 +84,20 @@ def display_image(file_id):
     # Send the image data as a response
     return send_file(base64.b64encode(image_data), mimetype='image/png')
 
+#
+#txt files routing
+#add all models for files inside the route functions for now till deployment
+#
+
+#
+#video files routing
+#add all models for files inside the route functions for now till deployment
+#
+
+#
+#docs files routing and models
+#add all models for files inside the route functions for now till deployment
+#
+
 if __name__ == '__main__':
     app.run(debug=True)
