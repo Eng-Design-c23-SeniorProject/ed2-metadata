@@ -87,7 +87,7 @@ def display_image(file_id):
         return 'Image not found.'
 
     # Send the image data as a response
-    return send_file(base64.b64encode(image_data), mimetype='image/png')
+    return send_file(base64.b64encode(image_data), mimetype='image/jpeg')
 
 #
 #txt files routing

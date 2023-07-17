@@ -5,12 +5,17 @@ import UploadPDF from './UploadPDF';
 import SearchPDF from './SearchPDF';
 import DisplayPDF from './DisplayPDF';
 import UploadImg from './UploadImg';
+import SearchImg from './SearchImg';
+import DisplayImg from './DisplayImg';
+
 import UploadText from './UploadText';
 import SearchText from './SearchText';
 import SearchVideo from './SearchVideo';
 import DisplayText from './DisplayText';
-import DisplayVideo from './DisplayVideo.js';
+import DisplayVideo from './DisplayVideo';
 import UploadVideo from './UploadVideo';
+
+
 
 const BodyContent = () => {
   return (
@@ -35,12 +40,18 @@ const BodyContent = () => {
           <Route path="/SearchPDF" element={<SearchPDF />} />
           <Route path="/DisplayPDF/:id" element={<DisplayPDF />} />
           <Route path="/UploadImg" element={<UploadImg />} />
+          <Route path="/SearchImg" element={<SearchImg />} />
+          <Route path="/DisplayImg/:id" element={<DisplayImg />} />
+
           <Route path="/UploadText" element={<UploadText />} />
           <Route path="/SearchText" element={<SearchText />} />
           <Route path="/SearchVideo" element={<SearchVideo />} />
           <Route path="/DisplayText/:id" element={<DisplayText />} />
           <Route path="/UploadVideo" element={<UploadVideo />} />
           <Route path="/DisplayVideo/:id" element={<DisplayVideo />} />
+
+          
+
         </Routes>
       </div>
     </div>
