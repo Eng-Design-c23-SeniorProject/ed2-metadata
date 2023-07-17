@@ -5,6 +5,12 @@ import UploadPDF from './UploadPDF';
 import SearchPDF from './SearchPDF';
 import DisplayPDF from './DisplayPDF';
 import UploadImg from './UploadImg';
+import UploadText from './UploadText';
+import SearchText from './SearchText';
+import SearchVideo from './SearchVideo';
+import DisplayText from './DisplayText';
+import DisplayVideo from './DisplayVideo.js';
+import UploadVideo from './UploadVideo';
 
 const BodyContent = () => {
   return (
@@ -13,10 +19,10 @@ const BodyContent = () => {
         <ul>
             <li><h3>Upload</h3></li>
             <li><Link to="/UploadPDF">PDF</Link></li>
-            <li><Link to="/">Docs</Link></li>
-            <li><Link to="/">Txt</Link></li>
+            <li><Link to="/UploadDocs">Docs</Link></li>
+            <li><Link to="/UploadText">Txt</Link></li>
             <li><Link to="/UploadImg">Image</Link></li>
-            <li><Link to="/">Video</Link></li>
+            <li><Link to="/UploadVideo">Video</Link></li>
             <li><h3>Dashboard</h3></li>
             <li><Link to="/">View Dashboard</Link></li>
             <li><h3>Grammar</h3></li>
@@ -29,6 +35,12 @@ const BodyContent = () => {
           <Route path="/SearchPDF" element={<SearchPDF />} />
           <Route path="/DisplayPDF/:id" element={<DisplayPDF />} />
           <Route path="/UploadImg" element={<UploadImg />} />
+          <Route path="/UploadText" element={<UploadText />} />
+          <Route path="/SearchText" element={<SearchText />} />
+          <Route path="/SearchVideo" element={<SearchVideo />} />
+          <Route path="/DisplayText/:id" element={<DisplayText />} />
+          <Route path="/UploadVideo" element={<UploadVideo />} />
+          <Route path="/DisplayVideo/:id" element={<DisplayVideo />} />
         </Routes>
       </div>
     </div>
