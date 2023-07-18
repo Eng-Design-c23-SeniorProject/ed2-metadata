@@ -1,11 +1,13 @@
+#imgFunc.py
 from pymongo import MongoClient
 import base64
 from bson import ObjectId
+import io
 
 #MongoDB connection
 client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority')
-db = client['image_database']
-collection = db['image_collection']
+db = client['img_database']
+collection = db['img_collection']
 
 #functions for image handling
 def store_image(file_data, filename):

@@ -5,7 +5,7 @@ import '../App.css';
 const Footer = () => {
   return (
     <div className="footer">
-      {/* Footer content */}
+      {/* footer content */}
         <p><b>Footer</b></p>
         <p><Link to="/">About</Link></p>
     </div>
