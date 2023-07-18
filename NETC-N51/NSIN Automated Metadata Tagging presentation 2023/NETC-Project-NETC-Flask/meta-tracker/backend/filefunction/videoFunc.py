@@ -8,9 +8,9 @@ client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbf
 db = client['video_database']
 collection = db['video_collection']
 
-# Functions for video handling
+#functions for video handling
 def store_video(file_data, filename):
-    # Store the uploaded video file in MongoDB
+    #storing the uploaded video file in MongoDB
     binary_data = base64.b64encode(file_data).decode('utf-8')
     document = {'name': filename, 'data': binary_data}
     collection.insert_one(document)
@@ -24,18 +24,18 @@ def get_video(file_id):
     return video_data
 
 def retrieve_video_data(file_id):
-    # Retrieve the video file from MongoDB
+    #retrieving the video file from MongoDB
     document = collection.find_one({'_id': ObjectId(file_id)})
     if document is None:
         return None
 
-    # Retrieve the video data from the document
+    #retrieving the video data from the document
     video_data = document['data']
 
-    # Convert the video data from base64 string to bytes
+    #converting the video data from base64 string to bytes
     video_bytes = base64.b64decode(video_data)
 
-    # Create a BytesIO object from the video bytes
+    #creating a BytesIO object from the video bytes
     video_file = io.BytesIO(video_bytes)
 
     return video_file

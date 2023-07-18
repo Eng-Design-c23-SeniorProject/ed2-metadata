@@ -16,7 +16,7 @@ openai.api_key = '#'
 
 # Function for storing text files
 def store_text_file(file_data, filename):
-    # Store the uploaded text file in MongoDB
+    #Store the uploaded text file in MongoDB
     text_data = base64.b64encode(file_data).decode('utf-8')
     document = {'name': filename, 'data': text_data}
     collection.insert_one(document)

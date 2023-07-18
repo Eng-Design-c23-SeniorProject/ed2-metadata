@@ -9,12 +9,22 @@ const DisplayImg = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/display-image/${id}`);
-        setImageUrl(`data:image/jpeg;base64,${response.data}`);
+        const response = await axios.get(`http://localhost:5000/display-image/${id}`, {
+          responseType: 'blob',
+        });
+    
+        const reader = new FileReader();
+    
+        reader.onloadend = () => {
+          setImageUrl(reader.result);
+        };
+    
+        reader.readAsDataURL(response.data);
       } catch (error) {
         console.error(error);
       }
     };
+    
 
     fetchData();
   }, [id]);
@@ -26,7 +36,7 @@ const DisplayImg = () => {
       {imageUrl && (
         <div>
           <h2>Image:</h2>
-          <img src={imageUrl} alt="Displayed Image" style={{ width: '50%', height: '500px' }} />
+          <img src={imageUrl} alt="search display placeholder" style={{ width: '50%', height: 'auto' }} />
         </div>
       )}
     </div>

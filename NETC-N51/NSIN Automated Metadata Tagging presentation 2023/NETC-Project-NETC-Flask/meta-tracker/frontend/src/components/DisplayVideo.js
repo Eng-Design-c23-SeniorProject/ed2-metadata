@@ -13,7 +13,7 @@ const DisplayVideo = () => {
           responseType: 'blob',
         });
 
-        // Create an object URL for the video blob
+        //creating an object URL for the video blob
         const videoBlob = new Blob([response.data], { type: 'video/mp4' });
         const videoUrl = URL.createObjectURL(videoBlob);
         setVideoUrl(videoUrl);
