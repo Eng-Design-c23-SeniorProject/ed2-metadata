@@ -9,8 +9,7 @@ const Navbar = () => {
         <Link to="/">MetaTracker</Link>
       </div>
       <form className="search-form">
-        <input type="text" placeholder="Search..." />
-        <button className="search-button"type="submit">Search</button>
+        <Link to="/SearchAll" className='search-button'>Search</Link>
       </form>
     </div>
   );

@@ -32,7 +32,6 @@ def summarize_text(text):
         'frequency_penalty': 0.0,
         'presence_penalty': 0.0
     }
-
     #sending summarization request to OpenAI API
     response = openai.Completion.create(**parameters)
 

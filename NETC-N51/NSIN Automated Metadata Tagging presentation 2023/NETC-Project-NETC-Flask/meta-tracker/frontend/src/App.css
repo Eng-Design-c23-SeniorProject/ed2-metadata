@@ -20,7 +20,7 @@
 	font-size: 1rem;
 	line-height: 1.5;
 	border-radius: .25rem;
-	color: #fff;
+	color: #000000;
 	background-color: #7f74745f;
 }
 .search-button:hover{
@@ -72,4 +72,11 @@
   right: 0;
 }
 
-/*add design for how files are desplaying*/
+/*add design for how files are searched*/
+.allFileDisplay {
+  background-color: #d9aedb;
+  width: 90%;
+  margin-right: 5%;
+  margin-left: 5%;
+  margin-top: 0;
+}

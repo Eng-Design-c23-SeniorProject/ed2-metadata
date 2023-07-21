@@ -1,12 +1,9 @@
 from pymongo import MongoClient
 import base64
-import PyPDF2
-import io
 import openai
 from bson import ObjectId
-from flask import jsonify
 
-# MongoDB connection
+#MongoDB connection
 client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority')
 db = client['text_database']
 collection = db['text_collection']
@@ -14,16 +11,20 @@ collection = db['text_collection']
 #OpenAI API key
 openai.api_key = '#'
 
-# Function for storing text files
-def store_text_file(file_data, filename):
-    #Store the uploaded text file in MongoDB
+#function for storing text files
+def store_text_file(file_data, filename, sha256_hash):
+    #store the uploaded text file in MongoDB
     text_data = base64.b64encode(file_data).decode('utf-8')
-    document = {'name': filename, 'data': text_data}
+    document = {'name': filename, 'data': text_data, 'sha256_hash': sha256_hash}  # Database model
     collection.insert_one(document)
 
-def extract_text_from_text_file(file_data):
-    text_content = file_data
-    return text_content
+def extract_text_from_text_file(file_id):
+    document = collection.find_one({'_id': ObjectId(file_id)})
+    if document is None:
+        return None
+
+    text_data = base64.b64decode(document['data']).decode('utf-8')
+    return text_data
 
 def summarize_text(text):
     #prompt for summarization
@@ -39,7 +40,6 @@ def summarize_text(text):
         'frequency_penalty': 0.0,
         'presence_penalty': 0.0
     }
-
     #send summarization request to OpenAI API
     response = openai.Completion.create(**parameters)
 
@@ -47,4 +47,3 @@ def summarize_text(text):
     summary = response.choices[0].text.strip()
 
     return summary
-

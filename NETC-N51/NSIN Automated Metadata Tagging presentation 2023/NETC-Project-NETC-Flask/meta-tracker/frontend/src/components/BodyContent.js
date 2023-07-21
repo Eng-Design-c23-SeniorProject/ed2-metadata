@@ -17,6 +17,9 @@ import UploadDocs from './UploadDocs';
 import SearchDocs from './SearchDocs';
 import DisplayDocs from './DisplayDocs';
 
+
+import SearchAll from './SearchAll';
+
 const BodyContent = () => {
   return (
     <div className="body">
@@ -30,8 +33,8 @@ const BodyContent = () => {
             <li><Link to="/UploadDocs">Docx</Link></li>
             <li><h3>Dashboard</h3></li>
             <li><Link to="/">View Dashboard</Link></li>
-            <li><h3>User Display</h3></li>
-            <li><Link to="/">User Display</Link></li>
+            <li><h3>Admin: User Display</h3></li>
+            <li><Link to="/">View Display</Link></li>
         </ul>
       </div>
       <div className="grid2">
@@ -51,6 +54,9 @@ const BodyContent = () => {
           <Route path="/UploadDocs" element={<UploadDocs />} />
           <Route path="/SearchDocs" element={<SearchDocs />} />
           <Route path="/DisplayDocs/:id" element={<DisplayDocs />} />
+
+
+          <Route path="/SearchAll" element={<SearchAll />} />
         </Routes>
       </div>
     </div>

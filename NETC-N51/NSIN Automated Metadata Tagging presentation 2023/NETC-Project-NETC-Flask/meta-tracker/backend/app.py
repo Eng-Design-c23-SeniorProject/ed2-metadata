@@ -1,15 +1,15 @@
-#app.py
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import base64
 import io
 from bson import ObjectId
+import hashlib #library to compute the SHA-256 hash of the file data
 #from models.model import TextFile, VideoFile
 from mongoengine import connect, Document, StringField, FileField
 from filefunction.pdfFunc import extract_text_from_pdf, summarize_text, collection as pdf_collection
 from filefunction.imgFunc import store_image, get_image, search_images, collection as img_collection
 from filefunction.videoFunc import collection as video_collection, store_video, retrieve_video_data
-from filefunction.txtFunc import collection as text_collection, store_text_file
+from filefunction.txtFunc import store_text_file, extract_text_from_text_file, summarize_text, collection as text_collection
 from filefunction.docsFunc import extract_text_from_doc, summarize_text, collection as doc_collection
 
 app = Flask(__name__)
@@ -21,9 +21,17 @@ def upload_pdf():
     file = request.files['file']
     file_data = file.read()
 
-    # Store the uploaded PDF file in MongoDB
+    #calculate SHA-256 hash of the file data
+    sha256_hash = hashlib.sha256(file_data).hexdigest()
+
+    #check if the file data already exists in the database using SHA-256
+    existing_file = pdf_collection.find_one({'sha256_hash': sha256_hash})
+    if existing_file:
+        return 'PDF file already uploaded and stored in the database.'
+
+    #store the uploaded PDF file in MongoDB
     binary_data = base64.b64encode(file_data)
-    document = {'name': file.filename, 'data': binary_data}  # Database model
+    document = {'name': file.filename, 'data': binary_data, 'sha256_hash': sha256_hash}  # Database model
     pdf_collection.insert_one(document)
 
     return 'PDF file uploaded successfully.'
@@ -64,10 +72,17 @@ def display_pdf(file_id):
 def upload_image():
     file = request.files['image']
     file_data = file.read()
-    filename = file.filename
 
-    #storing the uploaded image file in MongoDB
-    store_image(file_data, filename)
+    #calculate SHA-256 hash of the file data
+    sha256_hash = hashlib.sha256(file_data).hexdigest()
+
+    #check if the file data already exists in the database using SHA-256
+    existing_image = img_collection.find_one({'sha256_hash': sha256_hash})
+    if existing_image:
+        return 'Image already uploaded and stored in the database.'
+
+    #store the uploaded image file in MongoDB
+    store_image(file_data, file.filename, sha256_hash)
 
     return 'Image uploaded successfully.'
 
@@ -88,7 +103,7 @@ def display_image(file_id):
     if image_data is None:
         return 'Image not found.', 404
 
-    #instead of sending the raw image data as bytes, let's send it as a response
+    #send image response
     return send_file(io.BytesIO(image_data), mimetype='image/jpeg')
 
 #text upload route
@@ -96,10 +111,17 @@ def display_image(file_id):
 def upload_text():
     file = request.files['file']
     file_data = file.read()
-    filename = file.filename
 
-    #storing the uploaded text file in MongoDB
-    store_text_file(file_data, filename)
+    #calculate SHA-256 hash of the file data
+    sha256_hash = hashlib.sha256(file_data).hexdigest()
+
+    #check if the file data already exists in the database using SHA-256
+    existing_file = text_collection.find_one({'sha256_hash': sha256_hash})
+    if existing_file:
+        return 'Text file already uploaded and stored in the database.'
+
+    #store the uploaded text file in MongoDB
+    store_text_file(file_data, file.filename, sha256_hash)
 
     return 'Text file uploaded successfully.'
 
@@ -109,25 +131,16 @@ def search_text():
     query = request.json['query']
     result = []
 
-    #searching for files in the MongoDB collection
+    #search for text files in the MongoDB collection
     for document in text_collection.find({'name': {'$regex': query, '$options': 'i'}}):
         result.append({'_id': str(document['_id']), 'name': document['name']})
 
     return jsonify(result=result, query=query)
 
-#extracting text files from mongoDB
-def extract_text_from_mongodb(file_id):
-    document = text_collection.find_one({'_id': ObjectId(file_id)})
-    if document is None:
-        return None
-
-    text_data = document['data']
-    return text_data
-
 #text display route
 @app.route('/display-text/<file_id>')
 def display_text(file_id):
-    text_data = extract_text_from_mongodb(file_id)
+    text_data = extract_text_from_text_file(file_id)
     if text_data is None:
         return jsonify({'error': 'Text file not found.'}), 404
 
@@ -141,17 +154,26 @@ def display_text(file_id):
 
     return jsonify(response)
 
-#video upload routing
+#video upload route
 @app.route('/upload-video', methods=['POST'])
 def upload_video():
     file = request.files['video']
     file_data = file.read()
-    filename = file.filename
 
-    #storing the uploaded video file in MongoDB
-    store_video(file_data, filename)
+    #calculate SHA-256 hash of the file data
+    sha256_hash = hashlib.sha256(file_data).hexdigest()
 
-    return 'Video uploaded successfully.'
+    #check if the file data already exists in the database using SHA-256
+    existing_file = video_collection.find_one({'sha256_hash': sha256_hash})
+    if existing_file:
+        return 'Video file already uploaded and stored in the database.'
+
+    #store the uploaded video file in MongoDB
+    binary_data = base64.b64encode(file_data)
+    document = {'name': file.filename, 'data': binary_data, 'sha256_hash': sha256_hash}  # Database model
+    video_collection.insert_one(document)
+
+    return 'Video file uploaded successfully.'
 
 #video search route
 @app.route('/search-video', methods=['POST'])
@@ -168,6 +190,7 @@ def search_video():
 #video display route
 @app.route('/display-video/<file_id>')
 def display_video(file_id):
+    
     #retrieving the video data
     video_data = retrieve_video_data(file_id)
     if video_data is None:
@@ -181,10 +204,18 @@ def display_video(file_id):
 def upload_doc():
     file = request.files['file']
     file_data = file.read()
-
-    #storing the uploaded docx file in MongoDB
+    
+    #calculate SHA-256 hash of the file data
+    sha256_hash = hashlib.sha256(file_data).hexdigest()
+    
+    #check if the file data already exists in the database using SHA-256
+    existing_file = doc_collection.find_one({'sha256_hash': sha256_hash})
+    if existing_file:
+        return 'File is a duplicate. Upload skipped.'
+    
+    #store the uploaded docx file in MongoDB
     binary_data = base64.b64encode(file_data)
-    document = {'name': file.filename, 'data': binary_data}  # Database model
+    document = {'name': file.filename, 'data': binary_data, 'sha256_hash': sha256_hash}  # Database model
     doc_collection.insert_one(document)
 
     return 'DOC file uploaded successfully.'
@@ -194,7 +225,7 @@ def upload_doc():
 def search_doc():
     query = request.json['query']
     result = []
-
+    
     #searching for docx files in the MongoDB collection
     for document in doc_collection.find({'name': {'$regex': query, '$options': 'i'}}):
         result.append({'_id': str(document['_id']), 'name': document['name']})
@@ -209,15 +240,13 @@ def display_doc(file_id):
         return 'DOC file not found.'
 
     doc_data = base64.b64decode(document['data'])
-
+    
     #generating summary of the docx file using OpenAI
     summary = summarize_text(extract_text_from_doc(doc_data))
-
     response = {
         'docData': base64.b64encode(doc_data).decode('utf-8'),
         'summary': summary
     }
-
     return jsonify(response)
 
 if __name__ == '__main__':

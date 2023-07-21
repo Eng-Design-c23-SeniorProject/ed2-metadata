@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 const DisplayText = () => {
-  const [textUrl, settextUrl] = useState('');
+  const [textData, setTextData] = useState('');
   const [summary, setSummary] = useState('');
   const { id } = useParams();
 
@@ -11,7 +11,7 @@ const DisplayText = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/display-text/${id}`);
-        settextUrl(`data:text/plain;base64,${response.data.textData}`);
+        setTextData(response.data.textData);
         setSummary(response.data.summary);
       } catch (error) {
         console.error(error);
@@ -21,16 +21,35 @@ const DisplayText = () => {
     fetchData();
   }, [id]);
 
+  const handleDownload = () => {
+    const element = document.createElement('a');
+    const file = new Blob([textData], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = 'text_file.txt';
+    document.body.appendChild(element);
+    element.click();
+  };
+
   return (
     <div>
       <h1>Text Display</h1>
 
-      {textUrl && (
+      {textData && (
         <div>
           <h2>Text Content:</h2>
-          <embed src={textUrl} type="text/plain" width="50%" height="500px" />
+          <textarea
+            readOnly
+            value={textData}
+            rows={30} //height
+            cols={80} //width
+            style={{ resize: 'none' }} //disable textarea resizing
+          />
         </div>
       )}
+
+      <div>
+        <button onClick={handleDownload}>Download File</button>
+      </div>
 
       {summary && (
         <div>
