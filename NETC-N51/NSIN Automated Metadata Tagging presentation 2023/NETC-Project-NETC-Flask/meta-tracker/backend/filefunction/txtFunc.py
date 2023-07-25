@@ -4,7 +4,7 @@ import openai
 from bson import ObjectId
 
 #MongoDB connection
-client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient('#')
 db = client['text_database']
 collection = db['text_collection']
 

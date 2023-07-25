@@ -5,7 +5,7 @@ import openai
 import docx
 
 #MongoDB connection
-client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient('#')
 db = client['doc_database']
 collection = db['doc_collection']
 

@@ -7,7 +7,7 @@ import hashlib #library to compute the SHA-256 hash of the file data
 #from models.model import TextFile, VideoFile
 from mongoengine import connect, Document, StringField, FileField
 from filefunction.pdfFunc import extract_text_from_pdf, summarize_text, collection as pdf_collection
-from filefunction.imgFunc import store_image, get_image, search_images, collection as img_collection
+from filefunction.imgFunc import store_image, get_image, search_images, rekognition_client, collection as img_collection
 from filefunction.videoFunc import collection as video_collection, store_video, retrieve_video_data
 from filefunction.txtFunc import store_text_file, extract_text_from_text_file, summarize_text, collection as text_collection
 from filefunction.docsFunc import extract_text_from_doc, summarize_text, collection as doc_collection
@@ -67,7 +67,7 @@ def display_pdf(file_id):
 
     return jsonify(response)
 
-#image upload route
+#image upload route #####################################################################################
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
     file = request.files['image']
@@ -106,7 +106,23 @@ def display_image(file_id):
     #send image response
     return send_file(io.BytesIO(image_data), mimetype='image/jpeg')
 
-#text upload route
+#new route for image classification
+@app.route('/classify-image', methods=['POST'])
+def classify_image():
+    try:
+        image_data = request.json['image']
+        image_bytes = base64.b64decode(image_data.split(',')[1])
+
+        #call the AWS Rekognition API to get image labels
+        response = rekognition_client.detect_labels(Image={'Bytes': image_bytes}, MaxLabels=10)
+
+        #extract and return the label names
+        labels = [label['Name'] for label in response['Labels']]
+        return jsonify(labels=labels)
+    except Exception as e:
+        return jsonify(error=str(e)), 500
+
+#text upload route ################################################################################################
 @app.route('/upload-text', methods=['POST'])
 def upload_text():
     file = request.files['file']
@@ -154,7 +170,7 @@ def display_text(file_id):
 
     return jsonify(response)
 
-#video upload route
+#video upload route ############################################################################################
 @app.route('/upload-video', methods=['POST'])
 def upload_video():
     file = request.files['video']
@@ -199,7 +215,7 @@ def display_video(file_id):
     #sending the video data as a response
     return send_file(video_data, mimetype='video/mp4')
 
-#docx upload route
+#docx upload route ################################################################################################33
 @app.route('/upload-doc', methods=['POST'])
 def upload_doc():
     file = request.files['file']

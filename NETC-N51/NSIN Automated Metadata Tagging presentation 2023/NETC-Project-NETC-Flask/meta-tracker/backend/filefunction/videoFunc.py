@@ -4,7 +4,7 @@ from bson import ObjectId
 import io
 
 #MongoDB connection
-client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient('#')
 db = client['video_database']
 collection = db['video_collection']
 

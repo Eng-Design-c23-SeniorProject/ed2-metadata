@@ -1,18 +1,34 @@
 from pymongo import MongoClient
 import base64
 from bson import ObjectId
+import boto3 #import AWS SDK
 
-#MongoDB connection
-client = MongoClient('mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority')
+AWS_ACCESS_KEY_ID = '#'
+AWS_SECRET_ACCESS_KEY = '#'
+
+# MongoDB connection
+client = MongoClient('#')
 db = client['img_database']
 collection = db['img_collection']
 
-#functions for image handling
+#initialize AWS Rekognition client with your credentials
+rekognition_client = boto3.client('rekognition', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+
+#functions for image handling to databse
 def store_image(file_data, filename, sha256_hash):
-    #store the uploaded image file in MongoDB with SHA-256 hash
-    binary_data = base64.b64encode(file_data)
-    document = {'name': filename, 'data': binary_data, 'sha256_hash': sha256_hash}
-    collection.insert_one(document)
+    try:
+        #call the AWS Rekognition API to get image labels
+        response = rekognition_client.detect_labels(Image={'Bytes': file_data}, MaxLabels=10)
+
+        #extract and store the label names
+        labels = [label['Name'] for label in response['Labels']]
+
+        #store the uploaded image file in MongoDB with SHA-256 hash and labels
+        binary_data = base64.b64encode(file_data)
+        document = {'name': filename, 'data': binary_data, 'sha256_hash': sha256_hash, 'labels': labels}
+        collection.insert_one(document)
+    except Exception as e:
+        print(f"Error storing image: {str(e)}")
 
 def get_image(file_id):
     document = collection.find_one({'_id': ObjectId(file_id)})
