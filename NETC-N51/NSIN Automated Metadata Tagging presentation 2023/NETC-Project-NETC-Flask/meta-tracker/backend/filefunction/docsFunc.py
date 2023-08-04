@@ -1,16 +1,21 @@
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
 import base64
 import io
 import openai
 import docx
 
+#load values from .env file
+load_dotenv()
+
 #MongoDB connection
-client = MongoClient('#')
-db = client['doc_database']
+client = MongoClient(os.getenv('MONGODB_URL'))
+db = client['metatracker_db']
 collection = db['doc_collection']
 
 #OpenAI API key
-openai.api_key = '#'
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 #functions for text extraction and summarization
 def extract_text_from_doc(doc_data):

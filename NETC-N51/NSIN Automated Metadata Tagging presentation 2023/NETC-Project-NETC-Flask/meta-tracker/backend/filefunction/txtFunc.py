@@ -1,15 +1,20 @@
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
 import base64
 import openai
 from bson import ObjectId
 
+#load values from .env file
+load_dotenv()
+
 #MongoDB connection
-client = MongoClient('#')
-db = client['text_database']
+client = MongoClient(os.getenv('MONGODB_URL'))
+db = client['metatracker_db']
 collection = db['text_collection']
 
 #OpenAI API key
-openai.api_key = '#'
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 #function for storing text files
 def store_text_file(file_data, filename, sha256_hash):

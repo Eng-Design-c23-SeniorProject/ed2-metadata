@@ -1,11 +1,16 @@
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
 import base64
 from bson import ObjectId
 import io
 
+#load values from .env file
+load_dotenv()
+
 #MongoDB connection
-client = MongoClient('#')
-db = client['video_database']
+client = MongoClient(os.getenv('MONGODB_URL'))
+db = client['metatracker_db']
 collection = db['video_collection']
 
 #functions for video handling

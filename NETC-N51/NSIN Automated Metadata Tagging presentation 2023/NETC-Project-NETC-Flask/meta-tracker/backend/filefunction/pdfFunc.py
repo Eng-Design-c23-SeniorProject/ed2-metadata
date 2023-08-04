@@ -1,17 +1,22 @@
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
 import base64
 import PyPDF2
 import io
 import openai
 from bson import ObjectId
 
+#load values from .env file
+load_dotenv()
+
 #MongoDB connection
-client = MongoClient('#')
-db = client['pdf_database']
+client = MongoClient(os.getenv('MONGODB_URL'))
+db = client['metatracker_db']
 collection = db['pdf_collection']
 
 #OpenAI API key
-openai.api_key = '#'
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 #functions for text extraction and summarization
 def extract_text_from_pdf(pdf_data):

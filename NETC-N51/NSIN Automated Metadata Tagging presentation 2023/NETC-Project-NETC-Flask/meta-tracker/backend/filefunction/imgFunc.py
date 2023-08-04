@@ -1,16 +1,21 @@
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
 import base64
 from bson import ObjectId
 import boto3 #import AWS SDK
 
+#load values from .env file
+load_dotenv()
+
 # MongoDB connection
-client = MongoClient('#')
-db = client['img_database']
+client = MongoClient(os.getenv('MONGODB_URL'))
+db = client['metatracker_db']
 collection = db['img_collection']
 
 #AWS Rekognition keys
-AWS_ACCESS_KEY_ID = '#'
-AWS_SECRET_ACCESS_KEY = '#'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_REKOG_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_REKOG_SECRET_ACCESS_KEY')
 
 #initialize AWS Rekognition client with your credentials
 rekognition_client = boto3.client('rekognition', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)

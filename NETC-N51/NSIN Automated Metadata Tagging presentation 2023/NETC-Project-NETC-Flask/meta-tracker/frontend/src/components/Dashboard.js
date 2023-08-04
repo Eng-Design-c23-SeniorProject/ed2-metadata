@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../App.css';
 
 function Dashboard() {
   const [data, setData] = useState([]);
@@ -23,6 +24,7 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <h1>MongoDB Dashboard</h1>
+      <hr/>
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -30,6 +32,7 @@ function Dashboard() {
           <thead>
             <tr>
               <th>Name</th>
+              <div class="vertical-line"></div>
               <th>ID</th>
             </tr>
           </thead>
@@ -37,6 +40,7 @@ function Dashboard() {
             {data.map((item) => (
               <tr key={item._id}>
                 <td>{item.name}</td>
+                <div class="vertical-line"></div>
                 <td>{item._id}</td>
               </tr>
             ))}

@@ -60,7 +60,7 @@ a:hover {
   height: auto;
   min-height: 480px !important;
   overflow-y: auto;
-  margin-bottom: 130px;
+  margin-bottom: 94px;
 }
 .grid1 {
   background-color: #67777998;
@@ -88,7 +88,7 @@ hr {
 }
 .footer {
   background-color: #2B3D5B;
-  padding: 12px;
+  padding: 20px;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -224,4 +224,15 @@ margin-right: 5%;
   color: black;
   margin-left: 20%;
   font-weight: bolder;
+}
+/* dashboard */
+.vertical-line {
+  width: 1px;
+  height: 50px; /* Adjust height as needed */
+  background-color: black; /* Or any other color you prefer */
+}
+.dashboard {
+  background-color: #7fc6c9be;
+  padding-left: 15px;
+  border: 4px solid navy;
 }

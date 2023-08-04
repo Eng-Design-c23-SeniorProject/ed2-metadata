@@ -14,12 +14,23 @@ from filefunction.docsFunc import extract_text_from_doc, summarize_text, collect
 
 
 ##################################
+from dotenv import load_dotenv
+import os
 from pymongo import MongoClient
 from bson.json_util import dumps
 ##################################
 
 app = Flask(__name__)
 CORS(app)
+
+#####################################
+#load values from .env file
+load_dotenv()
+
+# Connect to MongoDB
+client = MongoClient(os.getenv('MONGODB_URL'))
+db = client["metatracker_db"]
+#####################################
 
 #PDF upload route
 @app.route('/upload-pdf', methods=['POST'])
@@ -278,13 +289,10 @@ def display_doc(file_id):
 
 
 ##########################################################
-# Connect to MongoDB
-client = MongoClient("mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority")
-db = client["img_database"]
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    collections = ['pdf_collection', 'text_collection', 'doc_collection', 'img_collection']  # Remove duplicate 'img_collection'
+    collections = ['pdf_collection', 'text_collection', 'doc_collection', 'img_collection', 'video_collection']
     combined_data = []
 
     for collection_name in collections:
@@ -298,7 +306,6 @@ def get_data():
         combined_data.extend(data)
 
     return jsonify(combined_data)
-
 
 ##########################################################
 
