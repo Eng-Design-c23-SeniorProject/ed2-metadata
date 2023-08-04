@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import '../App.css';
 
 class UploadText extends React.Component {
   state = {
@@ -48,12 +49,13 @@ class UploadText extends React.Component {
 
     return (
       <div>
-        <h1>Upload a Text</h1>
+        <h1 className='UploadTitle'>Upload a Text</h1>
+        <hr/>
         <form onSubmit={this.handleFileUpload}>
-          <input type="file" name="file" />
-          <button type="submit">Upload</button>
+          <input className="uploadForm" type="file" name="file" />
+          <button className="uploadSubmit" type="submit">Upload</button>
         </form>
-        {message && <p>{message}</p>}
+        {message && <p className='uploadmsg'>{message}</p>}
       </div>
     );
   }

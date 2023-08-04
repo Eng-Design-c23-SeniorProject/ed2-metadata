@@ -3,14 +3,14 @@ from flask_cors import CORS
 import base64
 import io
 from bson import ObjectId
-import hashlib #library to compute the SHA-256 hash of the file data
-#from models.model import TextFile, VideoFile
+import hashlib
 from mongoengine import connect, Document, StringField, FileField
 from filefunction.pdfFunc import extract_text_from_pdf, summarize_text, collection as pdf_collection
 from filefunction.imgFunc import store_image, get_image, search_images, rekognition_client, collection as img_collection
 from filefunction.videoFunc import collection as video_collection, store_video, retrieve_video_data
 from filefunction.txtFunc import store_text_file, extract_text_from_text_file, summarize_text, collection as text_collection
 from filefunction.docsFunc import extract_text_from_doc, summarize_text, collection as doc_collection
+#from models.model import PDFFile, ImageFile, TextFile, VideoFile, DocFile
 
 app = Flask(__name__)
 CORS(app)

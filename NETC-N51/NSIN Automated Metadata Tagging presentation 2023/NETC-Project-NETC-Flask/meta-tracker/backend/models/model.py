@@ -1,18 +1,28 @@
-#MongoDB databse model to store the files
-from mongoengine import Document, StringField, BinaryField, FileField
-class PDFDocument(Document):
-    name = StringField()
-    data = BinaryField()
+# model.py
+from mongoengine import Document, StringField, FileField
+
+class PDFFile(Document):
+    name = StringField(required=True)
+    data = FileField(required=True)
+    sha256_hash = StringField(required=True)
+
+class ImageFile(Document):
+    name = StringField(required=True)
+    data = FileField(required=True)
+    sha256_hash = StringField(required=True)
+    labels = StringField()
 
 class TextFile(Document):
-    name = StringField()
-    data = BinaryField()
+    name = StringField(required=True)
+    data = StringField(required=True)
+    sha256_hash = StringField(required=True)
 
 class VideoFile(Document):
-    name = StringField()
-    filedata = FileField()
+    name = StringField(required=True)
+    data = FileField(required=True)
+    sha256_hash = StringField(required=True)
 
-#add all models for files inside the route functions for now till deployment
-#this file is currenttly not imported into any other files
-
-#currently not in use and need to be re-routing
+class DocFile(Document):
+    name = StringField(required=True)
+    data = FileField(required=True)
+    sha256_hash = StringField(required=True)

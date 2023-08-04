@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import FileViewer from 'react-file-viewer'
+import FileViewer from 'react-file-viewer';
+import '../App.css';
 
 const DisplayDocs = () => {
   const [docURL, setDocURL] = useState(null);
@@ -10,8 +11,7 @@ const DisplayDocs = () => {
   const file = {
     url: docURL,
     type: 'docx',
-  }
-
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,28 +27,35 @@ const DisplayDocs = () => {
     fetchData();
   }, [id]);
 
+  const downloadFile = () => {
+    const link = document.createElement('a');
+    link.href = docURL;
+    link.download = `document_${id}.docx`; // Set the filename here
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
-    <div>
-      <h1>DOC Display</h1>
-
+    <div className='filesDisplay'>
       {docURL ? (
         <div>
-          <h2>DOC Content:</h2>
-          {}
-          <FileViewer fileType={file.type} filePath={file.url} />
-          
+          <h2>Docx file:</h2>
+          <hr />
+          <FileViewer fileType={file.type} filePath={file.url} className='textfcon' />
         </div>
       ) : (
         <p>Loading...</p>
       )}
 
       {summary && (
-        <div>
+        <div className='summaryCon'>
           <h2>Summary:</h2>
           <p>{summary}</p>
         </div>
       )}
+
+      <button onClick={downloadFile} className='downloadbtt'>Download</button>
     </div>
   );
 };

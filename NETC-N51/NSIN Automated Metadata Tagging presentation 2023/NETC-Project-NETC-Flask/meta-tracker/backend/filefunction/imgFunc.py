@@ -3,13 +3,14 @@ import base64
 from bson import ObjectId
 import boto3 #import AWS SDK
 
-AWS_ACCESS_KEY_ID = '#'
-AWS_SECRET_ACCESS_KEY = '#'
-
 # MongoDB connection
 client = MongoClient('#')
 db = client['img_database']
 collection = db['img_collection']
+
+#AWS Rekognition keys
+AWS_ACCESS_KEY_ID = '#'
+AWS_SECRET_ACCESS_KEY = '#'
 
 #initialize AWS Rekognition client with your credentials
 rekognition_client = boto3.client('rekognition', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import '../App.css';
 
 class UploadVideo extends React.Component {
   constructor(props) {
@@ -45,13 +46,14 @@ class UploadVideo extends React.Component {
 
     return (
       <div>
-        <h1>Upload a Video</h1>
+        <h1 className='UploadTitle'>Upload a Video</h1>
+        <hr/>
         <form onSubmit={this.handleFileUpload}>
-          <input type="file" name="video" accept="video/*" />
-          <button type="submit">Upload</button>
+          <input className="uploadForm" type="file" name="video" accept="video/*" />
+          <button className="uploadSubmit" type="submit">Upload</button>
         </form>
         {/* Display the upload message */}
-        {uploadMessage && <p>{uploadMessage}</p>}
+        {uploadMessage && <p className='uploadmsg'>{uploadMessage}</p>}
       </div>
     );
   }

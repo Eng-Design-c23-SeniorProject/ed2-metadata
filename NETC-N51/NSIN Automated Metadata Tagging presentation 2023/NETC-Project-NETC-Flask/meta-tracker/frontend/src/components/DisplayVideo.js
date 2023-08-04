@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import '../App.css';
 
 const DisplayVideo = () => {
   const [videoUrl, setVideoUrl] = useState('');
@@ -13,7 +14,7 @@ const DisplayVideo = () => {
           responseType: 'blob',
         });
 
-        //creating an object URL for the video blob
+        // Creating an object URL for the video blob
         const videoBlob = new Blob([response.data], { type: 'video/mp4' });
         const videoUrl = URL.createObjectURL(videoBlob);
         setVideoUrl(videoUrl);
@@ -25,17 +26,27 @@ const DisplayVideo = () => {
     fetchVideo();
   }, [id]);
 
-  return (
-    <div>
-      <h1>Video Display</h1>
+  const downloadVideo = () => {
+    const link = document.createElement('a');
+    link.href = videoUrl;
+    link.download = `video-${id}.mp4`; // Set the desired file name here
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
+  return (
+    <div className='filesDisplay'>
       {videoUrl && (
         <div>
-          <h2>Video Content:</h2>
-          <video controls src={videoUrl} width="50%" height="auto" />
+          <h2>Video file:</h2>
+          <hr />
+          <video controls src={videoUrl} className='mediafdis' />
         </div>
       )}
+      <button onClick={downloadVideo} className='downloadbtt'>Download</button>
     </div>
+    // <div className='mediasumdis'></div>  --for video analysis
   );
 };
 

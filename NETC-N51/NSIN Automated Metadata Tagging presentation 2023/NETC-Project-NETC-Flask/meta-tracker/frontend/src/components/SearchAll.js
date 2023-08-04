@@ -57,10 +57,10 @@ const SearchAll = () => {
   };
 
   return (
-    <div className='allFileDisplay'>
-      <h2>Search a file</h2>
+    <div className='allFileSearch'>
       <form onSubmit={handleFormSubmit}>
         <input
+          className='inputplace'
           type="text"
           name="query"
           value={query}
@@ -68,7 +68,7 @@ const SearchAll = () => {
           placeholder={`Search a ${capitalize(searchType)}`}
           required
         />
-        <button type="submit">Search</button>
+        <button type="submit" className='inputbutton'><b>Search</b></button>
       </form>
       <div>
         <label>
@@ -123,7 +123,7 @@ const SearchAll = () => {
           <h2>{capitalize(searchType)}s found:</h2>
           <ul>
             {result.map((item) => (
-              <li key={item._id}>
+              <li className='searchfound' key={item._id}>
                 <Link to={`/Display${capitalize(searchType)}/${item._id}`} onClick={() => handleFileClick(item._id)}>
                   {item.name}
                 </Link>
@@ -132,7 +132,7 @@ const SearchAll = () => {
           </ul>
         </div>
       ) : (
-        <p>No {searchType}s found.</p>
+        <p className='searchMsg1'>Please search a {searchType} file.</p>
       )}
     </div>
   );

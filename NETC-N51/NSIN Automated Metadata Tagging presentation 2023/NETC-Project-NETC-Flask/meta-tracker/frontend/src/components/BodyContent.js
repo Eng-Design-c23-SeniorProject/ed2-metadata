@@ -18,16 +18,17 @@ const BodyContent = () => {
     <div className="body">
       <div className="grid1">
         <ul>
-            <li><h3>Upload</h3></li>
-            <li><Link to="/UploadPDF">PDF</Link></li>
+            <li><p className='titletwo'>Upload</p></li>
+            <hr/>
+            <li><Link to="/UploadPDF">Pdf</Link></li>
             <li><Link to="/UploadImg">Image</Link></li>
             <li><Link to="/UploadText">Txt</Link></li>
             <li><Link to="/UploadVideo">Video</Link></li>
             <li><Link to="/UploadDocs">Docx</Link></li>
-            <li><h3>Dashboard</h3></li>
+            <hr/>
+            <li><p className='titletwo'>Dashboard</p></li>
+            <hr/>
             <li><Link to="/">View Dashboard</Link></li>
-            <li><h3>Admin: User Display</h3></li>
-            <li><Link to="/">View Display</Link></li>
         </ul>
       </div>
       <div className="grid2">
@@ -48,5 +49,4 @@ const BodyContent = () => {
     </div>
   );
 };
-
 export default BodyContent;

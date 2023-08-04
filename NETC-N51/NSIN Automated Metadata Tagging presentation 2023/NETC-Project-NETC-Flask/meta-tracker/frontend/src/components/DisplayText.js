@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import '../App.css';
 
 const DisplayText = () => {
   const [textData, setTextData] = useState('');
@@ -31,32 +32,32 @@ const DisplayText = () => {
   };
 
   return (
-    <div>
-      <h1>Text Display</h1>
-
+    <div className='filesDisplay'>
       {textData && (
         <div>
-          <h2>Text Content:</h2>
+          <h2>Text file:</h2>
+          <hr/>
           <textarea
             readOnly
             value={textData}
-            rows={30} //height
-            cols={80} //width
+            rows={50} //height
+            cols={118} //width
             style={{ resize: 'none' }} //disable textarea resizing
+            className='textfcon'
           />
         </div>
       )}
 
-      <div>
-        <button onClick={handleDownload}>Download File</button>
-      </div>
-
       {summary && (
-        <div>
+        <div className='summaryCon'>
           <h2>Summary:</h2>
           <p>{summary}</p>
         </div>
       )}
+
+      <div>
+        <button onClick={handleDownload} className='downloadbtt'>Download</button>
+      </div>
     </div>
   );
 };

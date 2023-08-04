@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import '../App.css';
 
 const DisplayImg = () => {
   const [imageUrl, setImageUrl] = useState('');
@@ -42,18 +43,24 @@ const DisplayImg = () => {
     }
   };
 
-  return (
-    <div>
-      <h1>Image Display after search</h1>
+  const downloadImage = () => {
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = `image-${id}.png`; // Change the file name format as needed
+    link.click();
+  };
 
+  return (
+    <div className='filesDisplay'>
       {imageUrl && (
         <div>
-          <h2>Image:</h2>
-          <img src={imageUrl} alt="search display placeholder" style={{ width: '50%', height: 'auto' }} />
+          <h2>Image file:</h2>
+          <hr/>
+          <img src={imageUrl} alt="search display placeholder" className='mediafdis' />
 
           {labels.length > 0 && (
-            <div>
-              <h2>Image Classification Labels:</h2>
+            <div className='mediasumdis'>
+              <h2>Image classification tags:</h2>
               <ul>
                 {labels.map((label, index) => (
                   <li key={index}>{label}</li>
@@ -61,6 +68,8 @@ const DisplayImg = () => {
               </ul>
             </div>
           )}
+
+          <button onClick={downloadImage} className='downloadbtt'>Download</button>
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import '../App.css';
 
 class UploadPDF extends React.Component {
   state = {
@@ -36,12 +37,13 @@ class UploadPDF extends React.Component {
   render() {
     return (
       <div>
-        <h1>Upload a PDF</h1>
+        <h1 className='UploadTitle'>Upload a Pdf</h1>
+        <hr/>
         <form onSubmit={this.handleFileUpload}>
-          <input type="file" name="file" />
-          <button type="submit">Upload</button>
+          <input className="uploadForm" type="file" name="file" />
+          <button className="uploadSubmit" type="submit">Upload</button>
         </form>
-        {this.state.message && <p>{this.state.message}</p>}
+        {this.state.message && <p className='uploadmsg'>{this.state.message}</p>}
       </div>
     );
   }
