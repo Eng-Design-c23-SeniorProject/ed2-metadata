@@ -13,6 +13,8 @@ import DisplayVideo from './DisplayVideo';
 import UploadDocs from './UploadDocs';
 import DisplayDocs from './DisplayDocs';
 
+import Dashboard from './Dashboard'
+
 const BodyContent = () => {
   return (
     <div className="body">
@@ -28,7 +30,7 @@ const BodyContent = () => {
             <hr/>
             <li><p className='titletwo'>Dashboard</p></li>
             <hr/>
-            <li><Link to="/">View Dashboard</Link></li>
+            <li><Link to="/Dashboard">View Dashboard</Link></li>
         </ul>
       </div>
       <div className="grid2">
@@ -44,6 +46,8 @@ const BodyContent = () => {
           <Route path="/DisplayVideo/:id" element={<DisplayVideo />} />
           <Route path="/UploadDocs" element={<UploadDocs />} />
           <Route path="/DisplayDocs/:id" element={<DisplayDocs />} />
+
+          <Route path="/Dashboard" element={<Dashboard />} />
         </Routes>
       </div>
     </div>

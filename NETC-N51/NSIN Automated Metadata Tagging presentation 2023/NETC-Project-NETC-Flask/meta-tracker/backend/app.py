@@ -12,6 +12,12 @@ from filefunction.txtFunc import store_text_file, extract_text_from_text_file, s
 from filefunction.docsFunc import extract_text_from_doc, summarize_text, collection as doc_collection
 #from models.model import PDFFile, ImageFile, TextFile, VideoFile, DocFile
 
+
+##################################
+from pymongo import MongoClient
+from bson.json_util import dumps
+##################################
+
 app = Flask(__name__)
 CORS(app)
 
@@ -264,6 +270,37 @@ def display_doc(file_id):
         'summary': summary
     }
     return jsonify(response)
+
+
+
+
+
+
+
+##########################################################
+# Connect to MongoDB
+client = MongoClient("mongodb+srv://guitryantenor:EBW2D4AV3zaDrx31@sthreeapp.dbfcmff.mongodb.net/?retryWrites=true&w=majority")
+db = client["img_database"]
+
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    collections = ['pdf_collection', 'text_collection', 'doc_collection', 'img_collection']  # Remove duplicate 'img_collection'
+    combined_data = []
+
+    for collection_name in collections:
+        collection = db[collection_name]
+        data = list(collection.find({}, {'_id': 1, 'name': 1}))  # Modify fields as needed
+
+        # Convert ObjectId to string
+        for item in data:
+            item['_id'] = str(item['_id'])
+
+        combined_data.extend(data)
+
+    return jsonify(combined_data)
+
+
+##########################################################
 
 if __name__ == '__main__':
     app.run(debug=True)
