@@ -1,1 +1,3 @@
-# ed2 foundation setup completed for react + flask on 06/24/23
+# Summer '23 engineering design project by Bartholdy Alexandre, Cesar Morillo, Garrett Bell
+
+# Project completed on 08/01/23

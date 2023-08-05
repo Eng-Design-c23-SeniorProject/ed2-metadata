@@ -39,16 +39,15 @@
 }
 /*remove default link styles*/
 a {
-  color: inherit; /*inherit text color from parent*/
-  text-decoration: none; /*remove underline*/
+  color: inherit;
+  text-decoration: none;
 }
-
 /*apply specific styles for hovered links*/
 a:hover {
-  color: #26c78c; /*change link color on hover*/
-  text-decoration: none; /*remove underline on hover*/
+  color: #26c78c;
+  text-decoration: none;
 }
-/*main body content ################################################################################*/
+/*main body styles #####*/
 .body {
   display: grid;
   grid-template-columns: 20% 79%;
@@ -94,7 +93,7 @@ hr {
   left: 0;
   right: 0;
 }
-/*add design for how files are searched ##############################################################*/
+/*design for how files are searched #####*/
 .allFileSearch {
   padding: 20px;
   background-color: #5960639d;
@@ -135,8 +134,8 @@ hr {
   margin-right: 10px;
 }
 .allFileSearch input[type="radio"] {
-  transform: scale(1.5); /*increase the scale as needed*/
-  margin-right: 5px; /*adjust spacing between the radio button and label*/
+  transform: scale(1.5);
+  margin-right: 5px;
 }
 .searchfound {
   list-style-type: decimal;
@@ -225,11 +224,11 @@ margin-right: 5%;
   margin-left: 20%;
   font-weight: bolder;
 }
-/* dashboard */
+/* dashboard #####*/
 .vertical-line {
   width: 1px;
-  height: 50px; /* Adjust height as needed */
-  background-color: black; /* Or any other color you prefer */
+  height: 50px;
+  background-color: black;
 }
 .dashboard {
   background-color: #7fc6c9be;

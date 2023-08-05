@@ -30,7 +30,7 @@ const DisplayDocs = () => {
   const downloadFile = () => {
     const link = document.createElement('a');
     link.href = docURL;
-    link.download = `document_${id}.docx`; // Set the filename here
+    link.download = `document_${id}.docx`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

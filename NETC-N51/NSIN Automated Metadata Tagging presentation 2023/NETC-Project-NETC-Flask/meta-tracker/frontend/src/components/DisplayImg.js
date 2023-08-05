@@ -46,7 +46,7 @@ const DisplayImg = () => {
   const downloadImage = () => {
     const link = document.createElement('a');
     link.href = imageUrl;
-    link.download = `image-${id}.png`; // Change the file name format as needed
+    link.download = `image-${id}.png`;
     link.click();
   };
 

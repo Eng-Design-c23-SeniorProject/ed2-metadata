@@ -29,7 +29,7 @@ const DisplayVideo = () => {
   const downloadVideo = () => {
     const link = document.createElement('a');
     link.href = videoUrl;
-    link.download = `video-${id}.mp4`; // Set the desired file name here
+    link.download = `video-${id}.mp4`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

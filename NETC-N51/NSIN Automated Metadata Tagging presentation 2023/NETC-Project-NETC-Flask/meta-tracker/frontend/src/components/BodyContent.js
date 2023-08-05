@@ -12,8 +12,7 @@ import UploadVideo from './UploadVideo';
 import DisplayVideo from './DisplayVideo';
 import UploadDocs from './UploadDocs';
 import DisplayDocs from './DisplayDocs';
-
-import Dashboard from './Dashboard'
+import Dashboard from './Dashboard';
 
 const BodyContent = () => {
   return (
@@ -46,7 +45,6 @@ const BodyContent = () => {
           <Route path="/DisplayVideo/:id" element={<DisplayVideo />} />
           <Route path="/UploadDocs" element={<UploadDocs />} />
           <Route path="/DisplayDocs/:id" element={<DisplayDocs />} />
-
           <Route path="/Dashboard" element={<Dashboard />} />
         </Routes>
       </div>

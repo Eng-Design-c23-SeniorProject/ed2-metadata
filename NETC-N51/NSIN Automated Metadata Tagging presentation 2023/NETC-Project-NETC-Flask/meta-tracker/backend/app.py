@@ -11,8 +11,6 @@ from filefunction.videoFunc import collection as video_collection, store_video, 
 from filefunction.txtFunc import store_text_file, extract_text_from_text_file, summarize_text, collection as text_collection
 from filefunction.docsFunc import extract_text_from_doc, summarize_text, collection as doc_collection
 #from models.model import PDFFile, ImageFile, TextFile, VideoFile, DocFile
-
-
 ##################################
 from dotenv import load_dotenv
 import os
@@ -23,14 +21,14 @@ from bson.json_util import dumps
 app = Flask(__name__)
 CORS(app)
 
-#####################################
+##################################
 #load values from .env file
 load_dotenv()
 
-# Connect to MongoDB
+#connection to MongoDB
 client = MongoClient(os.getenv('MONGODB_URL'))
 db = client["metatracker_db"]
-#####################################
+##################################
 
 #PDF upload route
 @app.route('/upload-pdf', methods=['POST'])
@@ -84,7 +82,7 @@ def display_pdf(file_id):
 
     return jsonify(response)
 
-#image upload route #####################################################################################
+#image upload route##################################
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
     file = request.files['image']
@@ -139,7 +137,7 @@ def classify_image():
     except Exception as e:
         return jsonify(error=str(e)), 500
 
-#text upload route ################################################################################################
+#text upload route##################################
 @app.route('/upload-text', methods=['POST'])
 def upload_text():
     file = request.files['file']
@@ -187,7 +185,7 @@ def display_text(file_id):
 
     return jsonify(response)
 
-#video upload route ############################################################################################
+#video upload route##################################
 @app.route('/upload-video', methods=['POST'])
 def upload_video():
     file = request.files['video']
@@ -232,7 +230,7 @@ def display_video(file_id):
     #sending the video data as a response
     return send_file(video_data, mimetype='video/mp4')
 
-#docx upload route ################################################################################################33
+#docx upload route##################################
 @app.route('/upload-doc', methods=['POST'])
 def upload_doc():
     file = request.files['file']
@@ -282,14 +280,7 @@ def display_doc(file_id):
     }
     return jsonify(response)
 
-
-
-
-
-
-
-##########################################################
-
+#database route##################################
 @app.route('/api/data', methods=['GET'])
 def get_data():
     collections = ['pdf_collection', 'text_collection', 'doc_collection', 'img_collection', 'video_collection']
@@ -306,7 +297,6 @@ def get_data():
         combined_data.extend(data)
 
     return jsonify(combined_data)
-
 ##########################################################
 
 if __name__ == '__main__':

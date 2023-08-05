@@ -1,4 +1,4 @@
-# model.py
+#database models
 from mongoengine import Document, StringField, FileField
 
 class PDFFile(Document):
